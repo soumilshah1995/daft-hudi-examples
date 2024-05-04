@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Data</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        /* Add custom CSS for table styling */
+        body {
+            background-color: #f8f9fa; /* Light grey background */
+        }
+
+        .container {
+            margin-top: 50px; /* Add some space from the top */
+        }
+
+        .jumbotron {
+            background-color: #007bff; /* Primary blue background */
+            color: white; /* White text */
+            text-align: center; /* Center align text */
+            margin-bottom: 30px; /* Add some space at the bottom */
+        }
+
+        .filter-box {
+            margin-bottom: 20px;
+            text-align: left; /* Align form to the left */
+        }
+
+        .filter-btn {
+            margin-top: 20px; /* Add space from the button to the input */
+        }
+
+        table {
+            background-color: white; /* White background for table */
+            box-shadow: 0 0 20px rgba(0,0,0,0.1); /* Add shadow to table */
+        }
+
+        th {
+            background-color: #f2f2f2; /* Light grey background for table header */
+        }
+
+        tr:hover {
+            background-color: #f5f5f5; /* Light grey background on hover */
+        }
+
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f9fa; /* Light grey background for footer */
+            text-align: center; /* Center align text */
+            padding: 10px 0; /* Add padding */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Home</a>
+        </nav>
+    </header>
+    <div class="jumbotron">
+        <h1 class="display-4">Powered by Apache Hudi Flask and Daft</h1>
+    </div>
+    <div class="filter-box">
+        <form action="/filter" method="post">
+            <div class="form-row"> <!-- Left align form -->
+                <div class="form-group col-md-4"> <!-- Input field column -->
+                    <label for="state" class="sr-only">State:</label>
+                    <input type="text" class="form-control" id="state" name="state" placeholder="State">
+                </div>
+                <div class="form-group col-md-2"> <!-- Button column -->
+                    <button type="submit" class="btn btn-primary btn-block">Filter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Add table to display customer data -->
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Customer ID</th>
+            <th>Name</th>
+            <th>City</th>
+            <th>Email</th>
+            <th>Created At</th>
+            <th>Address</th>
+            <th>State</th>
+            <th>OP</th>
+            <th>Year</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in data %}
+        <tr>
+            <td>{{ row['customer_id'] }}</td>
+            <td>{{ row['name'] }}</td>
+            <td>{{ row['city'] }}</td>
+            <td>{{ row['email'] }}</td>
+            <td>{{ row['created_at'] }}</td>
+            <td>{{ row['address'] }}</td>
+            <td>{{ row['state'] }}</td>
+            <td>{{ row['OP'] }}</td>
+            <td>{{ row['year'] }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <footer class="footer mt-auto py-3">
+        <div class="container text-center">
+            <span class="text-muted">&copy; 2024</span>
+        </div>
+    </footer>
+</div>
+<!-- Add Bootstrap JS link -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
