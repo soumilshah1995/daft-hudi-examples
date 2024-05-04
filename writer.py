@@ -10,8 +10,6 @@ try:
     import datetime
     from datetime import datetime
     import random
-    import pandas as pd  # Import Pandas library for pretty printing
-    print("Imports loaded ")
     from pyspark.sql.types import StructType, StructField, StringType
     from pyspark.sql.functions import lit
 except Exception as e:
@@ -33,13 +31,17 @@ spark = SparkSession.builder \
     .config('spark.sql.hive.convertMetastoreParquet', 'false') \
     .getOrCreate()
 
-# Define customer data
+
+
+fake = Faker()
+
+# Generate customer data using Faker
 customers_data = [
-    ("1", "John Doe", "New York", "john@example.com", "2022-01-01", "123 Main St", "NY", "I", "2022"),
-    ("2", "Jane Smith", "Los Angeles", "jane@example.com", "2022-01-02", "456 Elm St", "CA", "I", "2023"),
-    ("3", "Alice Johnson", "Chicago", "alice@example.com", "2022-01-03", "789 Oak St", "IL", "I", "2020")
+    (str(i), fake.name(), fake.city(), fake.email(), fake.date_of_birth(minimum_age=18).strftime('%Y-%m-%d'),
+     fake.street_address(), fake.state_abbr(), "I", str(fake.year())) for i in range(1, 40)
 ]
 
+# Define customer schema
 customers_schema = StructType([
     StructField("customer_id", StringType(), nullable=False),
     StructField("name", StringType(), nullable=True),
@@ -54,10 +56,10 @@ customers_schema = StructType([
 
 # Create DataFrame
 customers_df = spark.createDataFrame(data=customers_data, schema=customers_schema)
-# customers_df = customers_df.withColumn("_hoodie_is_deleted", lit(False))
 
 # Show DataFrame
 customers_df.show()
+
 
 
 def write_to_hudi(spark_df,
